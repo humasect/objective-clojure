@@ -1,4 +1,5 @@
-(ns objective-clojure.core)
+(ns objective-clojure.core
+  (:use [clojure.string :only [join]]))
 
 (def testfile "gamelike-actor.oclj")
 
@@ -32,12 +33,12 @@
   (str (second x) " " (name (first x))))
 
 (defn c-decls
-  "{:name int :*test char} => {int name; char *test;}"
+  "{:name int :*test char} => int name; char *test;"
   [decls]
-  (join (interpose "; " (map #'c-ify decls))))
+  (str (join (interpose "; " (map #'c-ify decls))) ";"))
 
 (defn c-args
-  "{:name int :*test char} => (int name, char *test)"
+  "{:name int :*test char} => int name, char *test"
   [args]
   (comma-sep (map #'c-ify args)))
 
@@ -49,10 +50,10 @@
 (defn objc-for-form [form]
   (case (name (first form))
     "import" (str "#import " (second form) "\n")
-    "class" (str "@class " (comma-sep (second form)) ";\n")
+    "class" (str "@class " (comma-sep (rest form)) ";\n")
     "interface" (str "@interface " (second form) " : " (third form)
                      "\n{\n" (c-decls (fourth form)) "\n}\n")
-    "property" (str "@property (" (comma-sep (second form)) ") " (c-decls (third form)))
+    "property" (str "@property (" (comma-sep (second form)) ") " (c-args (third form)) ";\n")
     ;; "+" (str "+ (" (c-type (second form)) ") " (objc-decl (third form)))
     ;; "-" (str "- (" (c-type (second form)) ") " (objc-decl (third form)))))
     "end" (str "@end\n")
@@ -63,8 +64,3 @@
 (defn objc-test []
   (map #'objc-for-form (load-forms testfile)))
 
-(defn lib
-  ([x] (when x (str (first x) ", " (lib (rest x))))))
-
-(defn lib2 [x]
-  (map #(str %1 ", ") x))

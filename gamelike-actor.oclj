@@ -2,7 +2,7 @@
 
 (import <TheMiddle/TheMiddle.h>)
 
-(class [World Room TextEffect])
+(class World Room TextEffect)
 
 (interface Actor CALayer
            {:attribute id
@@ -12,6 +12,7 @@
             :*details CALayer
             :*nameLayer TextEffect})
 
+(property (readonly) {:test int})
 (property [readonly] {:attribute id :family id :job id})
 (property [readonly] {:displayName id})
 
