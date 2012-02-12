@@ -6,8 +6,5 @@
 (implementation Actor)
 (dynamic room world location nameIsVisible)
 
-(- Room* room [
-               (return (Room *)self.superlayer.superlayer)
-               ])
-
-(- World* world [(return (World *)self.room.superlayer)])
+(- Room* room (return (Room *)self.superlayer.superlayer))
+(- World* world (return (World *)self.room.superlayer))
