@@ -1,0 +1,26 @@
+;; -*- clojure -*-
+
+(import <TheMiddle/TheMiddle.h>)
+
+(class World Room TextEffect)
+
+(interface Actor CALayer
+           {:attribute id
+            :family id
+            :job id
+            :radius Float
+            :*details CALayer
+            :*nameLayer TextEffect})
+
+(property {:test int} readonly)
+(property {:attribute id :family id :job id} readonly)
+(property {:displayName id} readonly)
+
+(property {:*room Room} readonly)
+(property {:*world World} readonly)
+
+(+ id {:newWithDictionary dict})
+(- BOOL {:willMoveToArea area})
+(- BOOL {:activateTrigger trigger})
+
+(end)
